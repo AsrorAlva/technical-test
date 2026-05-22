@@ -86,7 +86,7 @@ class TicketsController extends Controller
         $ticket->status = 'submitted';
         $ticket->save();
 
-        return redirect()->route('ticket')->with('success', 'Ticket created successfully.');
+        return redirect()->route('dashboard')->with('success', 'Ticket created successfully.');
     }
 
     /**
@@ -106,6 +106,6 @@ class TicketsController extends Controller
         $ticket->status = $request->status;
         $ticket->save();
 
-        return redirect()->route('ticket')->with('success', 'Ticket status updated successfully.');
+        return redirect()->route('dashboard')->with('success', 'Ticket status updated successfully.');
     }
 }
