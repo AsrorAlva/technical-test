@@ -4,7 +4,7 @@
 <div class="flex items-center justify-center min-h-[80vh]">
     <div class="w-full max-w-md bg-white rounded-xl shadow-lg border border-gray-100 p-8">
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Welcome Back</h1>
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Login</h1>
             <p class="text-sm text-gray-500 mt-2">Sign in to your account</p>
         </div>
 
