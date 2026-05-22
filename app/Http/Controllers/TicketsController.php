@@ -9,18 +9,62 @@ use Illuminate\Support\Facades\Auth;
 class TicketsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the dashboard page.
      */
-    public function index()
+    public function index(Request $request)
+    {
+        $filters = $request->validate([
+            'search' => 'nullable|string|max:255',
+            'priority' => 'nullable|in:low,medium,high',
+            'status' => 'nullable|in:submitted,ongoing,done',
+        ]);
+
+        $ticketsList = $this->getTicketsForCurrentUser($filters);
+
+        return view('page.dashboard', compact('ticketsList', 'filters'));
+    }
+
+    /**
+     * Display the tickets listing page.
+     */
+    public function ticket()
+    {
+        $ticketsList = $this->getTicketsForCurrentUser();
+        
+        return view('page.ticket', compact('ticketsList'));
+    }
+
+    private function getTicketsForCurrentUser(array $filters = [])
     {
         $user = Auth::user();
-        if ($user->role === 'admin') {
-            $ticketsList = tickets::with('user')->orderBy('created_at', 'desc')->get();
-        } else {
-            $ticketsList = tickets::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+
+        $query = tickets::with('user');
+
+        if ($user->role !== 'admin') {
+            $query->where('user_id', $user->id);
         }
-        
-        return view('page.dashboard', compact('ticketsList'));
+
+        if (! empty($filters['search'])) {
+            $search = $filters['search'];
+
+            $query->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if (! empty($filters['priority'])) {
+            $query->where('priority', $filters['priority']);
+        }
+
+        if (! empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        return $query->orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -42,7 +86,7 @@ class TicketsController extends Controller
         $ticket->status = 'submitted';
         $ticket->save();
 
-        return redirect()->route('dashboard')->with('success', 'Ticket created successfully.');
+        return redirect()->route('ticket')->with('success', 'Ticket created successfully.');
     }
 
     /**
@@ -51,7 +95,7 @@ class TicketsController extends Controller
     public function updateStatus(Request $request, $id)
     {
         if (Auth::user()->role !== 'admin') {
-            return redirect()->route('dashboard')->with('error', 'Unauthorized action.');
+            return redirect()->route('ticket')->with('error', 'Unauthorized action.');
         }
 
         $request->validate([
@@ -62,6 +106,6 @@ class TicketsController extends Controller
         $ticket->status = $request->status;
         $ticket->save();
 
-        return redirect()->route('dashboard')->with('success', 'Ticket status updated successfully.');
+        return redirect()->route('ticket')->with('success', 'Ticket status updated successfully.');
     }
 }

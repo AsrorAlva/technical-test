@@ -6,30 +6,39 @@
     <title>School Ticket System</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
-    @auth
-    <nav class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-xl font-bold text-indigo-600">SchoolTicketing</span>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <div class="text-sm">
-                        <span class="text-gray-500">Welcome,</span>
-                        <span class="font-medium text-gray-900">{{ Auth::user()->name }}</span>
-                        <span class="ml-2 px-2.5 py-0.5 rounded-full text-xs font-medium {{ Auth::user()->role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' }}">
-                            {{ ucfirst(Auth::user()->role) }}
-                        </span>
+<body class="bg-slate-50 text-[#2C3E50] font-sans antialiased min-h-screen flex flex-col leading-relaxed">
+    <div class="flex min-h-screen flex-col">
+        @auth
+            <!-- Navbar -->
+            <nav class="bg-white shadow-sm border-b border-slate-200">
+                <div class="px-4 sm:px-6 lg:px-8">
+                    <div class="flex min-h-16 flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:py-0">
+                        <div class="flex items-center">
+                            <span class="text-lg font-bold text-blue-600 sm:text-xl">SchoolTicketing</span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+                            <div class="text-sm">
+                                <span class="text-slate-500">Welcome,</span>
+                                <span class="font-medium text-[#2C3E50]">{{ Auth::user()->name }}</span>
+                                <span class="ml-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    {{ ucfirst(Auth::user()->role) }}
+                                </span>
+                            </div>
+                            <a href="{{ route('logout') }}" class="text-sm font-medium text-red-600 hover:text-red-500 transition-colors">Logout</a>
+                        </div>
                     </div>
-                    <a href="{{ route('logout') }}" class="text-sm font-medium text-red-600 hover:text-red-500 transition-colors">Logout</a>
                 </div>
-            </div>
-        </div>
-    </nav>
-    @endauth
+            </nav>
+        @endauth
 
-    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Main Container with Sidebar -->
+        <div class="flex flex-1 flex-col overflow-hidden md:flex-row">
+            @auth
+                @include('layouts.sidebar')
+            @endauth
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
         @if (session('success'))
             <div class="mb-6 bg-green-50 border-l-4 border-green-400 p-4 rounded-md shadow-sm">
                 <div class="flex">
@@ -61,6 +70,8 @@
         @endif
 
         @yield('content')
-    </main>
+            </main>
+        </div>
+    </div>
 </body>
 </html>
