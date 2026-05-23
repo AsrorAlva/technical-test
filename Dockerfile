@@ -15,6 +15,13 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY . .
 
+RUN mkdir -p \
+    storage/framework/cache/data \
+    storage/framework/sessions \
+    storage/framework/testing \
+    storage/framework/views \
+    && chmod -R 775 storage bootstrap/cache
+
 RUN composer install 
 
 RUN npm install
