@@ -10,7 +10,7 @@
     <div class="flex min-h-screen flex-col">
         @auth
             <!-- Navbar -->
-            <nav class="bg-white shadow-sm border-b border-slate-200">
+            <nav class="sticky top-0 z-30 bg-white shadow-sm border-b border-slate-200">
                 <div class="px-4 sm:px-6 lg:px-8">
                     <div class="flex min-h-16 flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:py-0">
                         <div class="flex items-center">
@@ -35,13 +35,13 @@
         @endauth
 
         <!-- Main Container with Sidebar -->
-        <div class="flex flex-1 flex-col overflow-hidden md:flex-row">
+        <div class="flex flex-1 flex-col overflow-hidden md:min-h-0 md:flex-row">
             @auth
                 @include('layouts.sidebar')
             @endauth
 
             <!-- Main Content -->
-            <main class="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+            <main class="flex-1 overflow-y-auto px-4 py-6 sm:px-6 md:h-[calc(100vh-4rem)] lg:px-8 lg:py-8">
         @if (session('success'))
             <div class="mb-6 bg-green-50 border-l-4 border-green-400 p-4 rounded-md shadow-sm">
                 <div class="flex">

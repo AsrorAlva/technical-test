@@ -1,4 +1,4 @@
-<aside class="w-full bg-white border-b border-slate-200 overflow-x-auto md:w-64 md:border-b-0 md:border-r md:overflow-y-auto">
+<aside class="w-full shrink-0 bg-white border-b border-slate-200 overflow-x-auto md:h-[calc(100vh-4rem)] md:w-64 md:border-b-0 md:border-r md:overflow-y-auto">
     <nav class="flex gap-2 p-3 md:block md:space-y-1 md:p-4">
 
         <a href="{{ route('dashboard') }}"

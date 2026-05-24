@@ -11,6 +11,24 @@ class TicketsController extends Controller
 
     public function index(Request $request)
     {
+        $ticketsList = $this->getTicketsForCurrentUser();
+
+        $statusCounts = [
+            'submitted' => $ticketsList->where('status', 'submitted')->count(),
+            'ongoing' => $ticketsList->where('status', 'ongoing')->count(),
+            'done' => $ticketsList->where('status', 'done')->count(),
+        ];
+
+        $totalTickets = $ticketsList->count();
+        $maxStatusCount = max($statusCounts) ?: 1;
+        $recentTickets = $ticketsList->take(5);
+
+        return view('page.dashboard', compact('ticketsList', 'statusCounts', 'totalTickets', 'maxStatusCount', 'recentTickets'));
+    }
+
+
+    public function ticket(Request $request)
+    {
         $filters = $request->validate([
             'search' => 'nullable|string|max:255',
             'priority' => 'nullable|in:low,medium,high',
@@ -18,16 +36,8 @@ class TicketsController extends Controller
         ]);
 
         $ticketsList = $this->getTicketsForCurrentUser($filters);
-
-        return view('page.dashboard', compact('ticketsList', 'filters'));
-    }
-
-
-    public function ticket()
-    {
-        $ticketsList = $this->getTicketsForCurrentUser();
         
-        return view('page.ticket', compact('ticketsList'));
+        return view('page.ticket', compact('ticketsList', 'filters'));
     }
 
     private function getTicketsForCurrentUser(array $filters = [])
@@ -68,6 +78,10 @@ class TicketsController extends Controller
      */
     public function store(Request $request)
     {
+        if (Auth::user()->role !== 'teacher') {
+            return redirect()->route('ticket')->with('error', 'Only teachers can submit tickets.');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
