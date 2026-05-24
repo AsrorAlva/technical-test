@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\tickets;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TicketsController extends Controller
 {
-    /**
-     * Display the dashboard page.
-     */
+
     public function index(Request $request)
     {
         $filters = $request->validate([
@@ -24,9 +22,7 @@ class TicketsController extends Controller
         return view('page.dashboard', compact('ticketsList', 'filters'));
     }
 
-    /**
-     * Display the tickets listing page.
-     */
+
     public function ticket()
     {
         $ticketsList = $this->getTicketsForCurrentUser();
@@ -38,7 +34,7 @@ class TicketsController extends Controller
     {
         $user = Auth::user();
 
-        $query = tickets::with('user');
+        $query = Ticket::with('user');
 
         if ($user->role !== 'admin') {
             $query->where('user_id', $user->id);
@@ -78,7 +74,7 @@ class TicketsController extends Controller
             'priority' => 'required|in:low,medium,high',
         ]);
 
-        $ticket = new tickets();
+        $ticket = new Ticket();
         $ticket->user_id = Auth::id();
         $ticket->title = $request->title;
         $ticket->description = $request->description;
@@ -102,7 +98,7 @@ class TicketsController extends Controller
             'status' => 'required|in:submitted,ongoing,done',
         ]);
 
-        $ticket = tickets::findOrFail($id);
+        $ticket = Ticket::findOrFail($id);
         $ticket->status = $request->status;
         $ticket->save();
 

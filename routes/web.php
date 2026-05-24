@@ -19,5 +19,5 @@ Route::middleware('auth')->group(function () {
     // Route::get('/ticket', [TicketsController::class, 'ticket'])->name('ticket');
     Route::post('/tickets', [TicketsController::class, 'store'])->name('tickets.store');
     Route::patch('/tickets/{id}/status', [TicketsController::class, 'updateStatus'])->name('tickets.updateStatus');
-    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 });

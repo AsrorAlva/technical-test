@@ -24,7 +24,10 @@
                                     {{ ucfirst(Auth::user()->role) }}
                                 </span>
                             </div>
-                            <a href="{{ route('logout') }}" class="text-sm font-medium text-red-600 hover:text-red-500 transition-colors">Logout</a>
+                            <form action="{{ route('logout') }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="text-sm font-medium text-red-600 hover:text-red-500 transition-colors">Logout</button>
+                            </form>
                         </div>
                     </div>
                 </div>
