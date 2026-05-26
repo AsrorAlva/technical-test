@@ -19,6 +19,18 @@ Default akun yang tersedia setelah seeding:
 
 ## 3. Setup Interaction
 
+Clone project:
+
+```bash
+git clone https://github.com/AsrorAlva/technical-test.git
+```
+
+pindah file:
+
+```bash
+cd technical-test
+```
+
 Copy file environment:
 
 ```bash
