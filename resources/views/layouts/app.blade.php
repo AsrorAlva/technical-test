@@ -14,7 +14,7 @@
                 <div class="px-4 sm:px-6 lg:px-8">
                     <div class="flex min-h-16 flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:py-0">
                         <div class="flex items-center">
-                            <span class="text-lg font-bold text-blue-600 sm:text-xl">SchoolTicketing</span>
+                            <span class="text-lg font-bold text-black sm:text-xl">Technical-Test</span>
                         </div>
                         <div class="flex flex-wrap items-center gap-3 sm:gap-4">
                             <div class="text-sm">

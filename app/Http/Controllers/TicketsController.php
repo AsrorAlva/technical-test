@@ -118,4 +118,16 @@ class TicketsController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Ticket status updated successfully.');
     }
+
+    public function show($id)
+    {
+        $ticket = Ticket::with('user')->findOrFail($id);
+
+        if (Auth::user()->role !== 'admin' && $ticket->user_id !== Auth::id()) {
+            return redirect()->route('ticket')->with('error', 'Unauthorized action.');
+        }
+
+        return view('page.ticket-detail', compact('ticket'));
+    }
+    
 }

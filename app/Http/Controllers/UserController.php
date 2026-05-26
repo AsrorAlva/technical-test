@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -23,14 +22,31 @@ class UserController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
+
+            Log::info('User logged in.', [
+                'user_id' => Auth::id(),
+                'email' => Auth::user()->email,
+                'role' => Auth::user()->role,
+            ]);
+
             return redirect()->route('dashboard');
         }
+
+        Log::warning('Failed login attempt.', [
+            'email' => $request->email,
+        ]);
 
         return back()->with('error', 'Email atau password salah');
     }
 
     public function logout(Request $request)
     {
+        Log::info('User logged out.', [
+            'user_id' => Auth::id(),
+            'email' => Auth::user()->email,
+            'role' => Auth::user()->role,
+        ]);
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

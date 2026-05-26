@@ -56,7 +56,9 @@
                 @forelse($recentTickets as $ticket)
                     <div class="border-b border-slate-100 pb-3 last:border-b-0 last:pb-0">
                         <div class="flex items-center justify-between gap-3">
-                            <p class="truncate text-sm font-medium text-[#2C3E50]">{{ $ticket->title }}</p>
+                            <a href="{{ route('tickets.show', $ticket->id) }}" class="truncate text-sm font-medium text-[#2C3E50] hover:text-blue-600">
+                                {{ $ticket->title }}
+                            </a>
                             <span class="shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold
                                 {{ $ticket->status === 'done' ? 'bg-green-100 text-green-800' : ($ticket->status === 'ongoing' ? 'bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-700') }}">
                                 {{ ucfirst($ticket->status) }}

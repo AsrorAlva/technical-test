@@ -111,6 +111,7 @@
                         <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Priority</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Date</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Status</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider">Action</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-slate-200">
@@ -146,10 +147,13 @@
                                     </select>
                                 </form>
                             </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <a href="{{ route('tickets.show', $ticket->id) }}" class="font-medium text-blue-600 hover:text-blue-500">Detail</a>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-4 whitespace-nowrap text-sm font-normal text-slate-500 text-center">
+                            <td colspan="6" class="px-6 py-4 whitespace-nowrap text-sm font-normal text-slate-500 text-center">
                                 No tickets found.
                             </td>
                         </tr>
